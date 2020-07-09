@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -34,23 +35,26 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+# Place initial item locations
+
+# stick = Item("Stick", "It's brown and sticky")
+all_items = {
+    'stick': Item("Stick", "It's brown and sticky")
+}
+
+print("this is the outside before it gets a stick", *room['outside'].items)
+room['outside'].add_item(all_items['stick'])
+print("this is the outside room", *room['outside'].items)
+print("this is the foyer room", *room['foyer'].items)
 #
 # Main
 #
-
-# Make a new player object that is currently in the 'outside' room.
-
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
 
 adventurer = Player("Gibbons", room['outside'])
 print()
 print(adventurer.current_room)
 print()
-user = str(input("\n [q] Quit Continue(n, s, e, w): ")).lower().strip()
+user = str(input("\n Quit[q] Continue(n, s, e, w): ")).lower().strip()
 
 while not user == 'q':
     # user goes north
@@ -81,15 +85,18 @@ while not user == 'q':
     elif user == 'w' and adventurer.current_room.w_to == None:
         print("\nYou didn't find much, and return to the center of the room")
 
+    # user searches
+    elif user == 'search':
+        if len(adventurer.current_room.items) > 0:
+            print("\nYou found something!\n")
+            print(*adventurer.current_room.items)
+        else:
+            print("\nYou didn't find anything useful\n")
+
     else:
-        print("\nYou must input a valid character, n, s, e, w, or q to quit")
+        print("\nYou must input a valid character, n, s, e, w, drop (item), grab(item) or q to quit")
 
     # print(f"\n{adventurer.current_room}\n")
-    user = str(input("\n [q] Quit Continue(n, s, e, w): ")).lower().strip()
+    user = str(input("\n Quit[q] Continue(n, s, e, w): ")).lower().strip()
 
 print("\n Game Over \n")
-
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
