@@ -6,21 +6,21 @@ from item import Item
 
 room = {
     'outside':  Room("The Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", []),
 
     'foyer':    Room("The Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", []),
 
     'overlook': Room("The Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""", []),
 
     'narrow':   Room("The Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", []),
 
     'treasure': Room("The Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", []),
 }
 
 
@@ -50,11 +50,11 @@ print("this is the foyer room", *room['foyer'].items)
 # Main
 #
 
-adventurer = Player("Gibbons", room['outside'])
+adventurer = Player("Gibbons", room['outside'], [])
 print()
 print(adventurer.current_room)
 print()
-user = str(input("\n Quit[q] Continue(n, s, e, w): ")).lower().strip()
+user = str(input("\nEnter an action ([h] for help): ")).lower().strip()
 
 while not user == 'q':
     # user goes north
@@ -93,10 +93,15 @@ while not user == 'q':
         else:
             print("\nYou didn't find anything useful\n")
 
+    # user asks for help
+    elif user == 'h':
+        print(
+            "\nQuit[q], Travel [n, s, e, w], Search [search]\nGrab[grab (item name)] Drop[drop(item name)] \n")
+
     else:
         print("\nYou must input a valid character, n, s, e, w, drop (item), grab(item) or q to quit")
 
     # print(f"\n{adventurer.current_room}\n")
-    user = str(input("\n Quit[q] Continue(n, s, e, w): ")).lower().strip()
+    user = str(input("\nEnter an action ([h] for help): ")).lower().strip()
 
 print("\n Game Over \n")

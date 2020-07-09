@@ -18,4 +18,6 @@ class Room:
 
     def add_item(self, new_item):
         self.items.append(new_item)
-        # return f"You added {new_item}"
+
+    def remove_item(self, new_item):
+        self.items.remove(new_item)
