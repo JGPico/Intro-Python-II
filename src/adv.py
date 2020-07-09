@@ -7,17 +7,17 @@ room = {
     'outside':  Room("The Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
 
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
+    'foyer':    Room("The Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
 
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
+    'overlook': Room("The Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm."""),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
+    'narrow':   Room("The Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air."""),
 
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
+    'treasure': Room("The Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
@@ -25,14 +25,14 @@ earlier adventurers. The only exit is to the south."""),
 
 # Link rooms together
 
-# room['outside'].n_to = room['foyer']
-# room['foyer'].s_to = room['outside']
-# room['foyer'].n_to = room['overlook']
-# room['foyer'].e_to = room['narrow']
-# room['overlook'].s_to = room['foyer']
-# room['narrow'].w_to = room['foyer']
-# room['narrow'].n_to = room['treasure']
-# room['treasure'].s_to = room['narrow']
+room['outside'].n_to = room['foyer']
+room['foyer'].s_to = room['outside']
+room['foyer'].n_to = room['overlook']
+room['foyer'].e_to = room['narrow']
+room['overlook'].s_to = room['foyer']
+room['narrow'].w_to = room['foyer']
+room['narrow'].n_to = room['treasure']
+room['treasure'].s_to = room['narrow']
 
 #
 # Main
@@ -46,18 +46,46 @@ earlier adventurers. The only exit is to the south."""),
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
 
-user = str(input("\n [q] Quit [c] Continue: ")).lower().strip()
 adventurer = Player("Gibbons", room['outside'])
+print()
+print(adventurer.current_room)
+print()
+user = str(input("\n [q] Quit Continue(n, s, e, w): ")).lower().strip()
 
 while not user == 'q':
-    print()
-    print(adventurer.current_room)
-    print()
-    if user == 'c':
-        print('\nYou are playing the game\n')
+    # user goes north
+    if user == 'n' and adventurer.current_room.n_to != None:
+        adventurer.current_room = adventurer.current_room.n_to
+        print(f"\n{adventurer.current_room}\n")
+    elif user == 'n' and adventurer.current_room.n_to == None:
+        print("\nYou didn't find much, and return to the center of the room")
 
-    print("Choose to play again or quit")
-    user = str(input("\n [q] Quit [c] Continue: ")).lower().strip()
+    # user goes south
+    elif user == 's' and adventurer.current_room.s_to != None:
+        adventurer.current_room = adventurer.current_room.s_to
+        print(f"\n{adventurer.current_room}\n")
+    elif user == 's' and adventurer.current_room.s_to == None:
+        print("\nYou didn't find much, and return to the center of the room")
+
+    # user goes east
+    elif user == 'e' and adventurer.current_room.e_to != None:
+        adventurer.current_room = adventurer.current_room.e_to
+        print(f"\n{adventurer.current_room}\n")
+    elif user == 'e' and adventurer.current_room.e_to == None:
+        print("\nYou didn't find much, and return to the center of the room")
+
+    # user goes west
+    elif user == 'w' and adventurer.current_room.w_to != None:
+        adventurer.current_room = adventurer.current_room.w_to
+        print(f"\n{adventurer.current_room}\n")
+    elif user == 'w' and adventurer.current_room.w_to == None:
+        print("\nYou didn't find much, and return to the center of the room")
+
+    else:
+        print("\nYou must input a valid character, n, s, e, w, or q to quit")
+
+    # print(f"\n{adventurer.current_room}\n")
+    user = str(input("\n [q] Quit Continue(n, s, e, w): ")).lower().strip()
 
 print("\n Game Over \n")
 
